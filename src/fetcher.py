@@ -21,9 +21,9 @@ CHANNELS = 2
 RATE = 44100
 CHUNK = 1024
 RECORD_SECONDS = 10  # Adjust as needed
-OUTPUT_FILENAME = "./sanger/output.wav"
+OUTPUT_FILENAME = "./songs/output.wav"
 
-def record_system_audio(output_filename, record_seconds):
+def record_system_audio(output_filename, record_seconds, _input_device_index=1):
     """
     Record system audio and save it to a WAV file.
 
@@ -32,15 +32,6 @@ def record_system_audio(output_filename, record_seconds):
         record_seconds (int): The duration of the audio recording in seconds.
     """
     audio = pyaudio.PyAudio()
-
-    # Check available input devices
-    print("Available input devices:")
-    for i in range(audio.get_device_count()):
-        info = audio.get_device_info_by_index(i)
-        print(f"Index: {i}, Name: {info['name']}")
-    print()
-
-    _input_device_index = int(input("Enter the input device index: "))
 
     # Open the audio stream
     stream = audio.open(format=FORMAT,
@@ -76,5 +67,22 @@ def record_system_audio(output_filename, record_seconds):
     print(f"Audio saved to {output_filename}")
 
 if __name__ == "__main__":
+    audio = pyaudio.PyAudio()
+
+    # Check available input devices
+    print("Available input devices:")
+    for i in range(audio.get_device_count()):
+        info = audio.get_device_info_by_index(i)
+        print(f"Index: {i}, Name: {info['name']}")
+    print()
+
+    input_device_index = int(input('Skriv inn input device index: '))
+
+    print('Velg lengde på opptak i sekunder:')
+    record_seconds = int(input('Skriv inn antall sekunder: '))
+
+    print('Velg navn på output fil:')
+    output_filename = input('Skriv inn filnavn: ')
+
     # Example usage
-    record_system_audio(OUTPUT_FILENAME, RECORD_SECONDS)
+    record_system_audio('./songs/' + output_filename + '.wav', record_seconds, input_device_index)
