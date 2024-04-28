@@ -21,7 +21,7 @@ CHANNELS = 2
 RATE = 44100
 CHUNK = 1024
 RECORD_SECONDS = 10  # Adjust as needed
-OUTPUT_FILENAME = "output.wav"
+OUTPUT_FILENAME = "./sanger/output.wav"
 
 def record_system_audio(output_filename, record_seconds):
     """
