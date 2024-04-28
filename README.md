@@ -1,0 +1,1 @@
+Det blir bra med litt lys på NBB ;)
