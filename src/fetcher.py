@@ -2,14 +2,19 @@
 This module provides a function to record system audio and save it to a WAV file.
 
 Usage:
-    record_system_audio(output_filename, record_seconds)
+    record_audio(output_filename, record_seconds)
 
 Parameters:
     output_filename (str): The name of the output WAV file.
     record_seconds (int): The duration of the audio recording in seconds.
+    input_device_index (int): The index of the input device to record from.
 
 Example:
-    record_system_audio("output.wav", 10)
+    record_audio("output", 10, 2)
+    
+Note:
+    This software has some legal implications. It is the responsibility of the user to ensure that they are compliant with all relevant laws and regulations.
+    This software shoul UNDER NO CIRCUMSTANCES be used be used with virtual cable software, like VB-Audio Virtual Cable, to record audio from streaming services, like Spotify.
 """
 
 import wave
@@ -20,16 +25,14 @@ FORMAT = pyaudio.paInt16
 CHANNELS = 2
 RATE = 44100
 CHUNK = 1024
-RECORD_SECONDS = 10  # Adjust as needed
-OUTPUT_FILENAME = "./songs/output.wav"
 
-def record_system_audio(output_filename, record_seconds, _input_device_index=1):
+def record_audio(_output_filename, _record_seconds, _input_device_index=1) -> None:
     """
     Record system audio and save it to a WAV file.
 
     Parameters:
-        output_filename (str): The name of the output WAV file.
-        record_seconds (int): The duration of the audio recording in seconds.
+        _output_filename (str): The name of the output WAV file.
+        _record_seconds (int): The duration of the audio recording in seconds.
     """
     audio = pyaudio.PyAudio()
 
@@ -46,7 +49,7 @@ def record_system_audio(output_filename, record_seconds, _input_device_index=1):
     frames = []
 
     # Record audio frames
-    for i in range(0, int(RATE / CHUNK * record_seconds)):
+    for i in range(0, int(RATE / CHUNK * _record_seconds)):
         data = stream.read(CHUNK)
         frames.append(data)
 
@@ -58,13 +61,13 @@ def record_system_audio(output_filename, record_seconds, _input_device_index=1):
     audio.terminate()
 
     # Save recorded audio to a WAV file
-    with wave.open(output_filename, 'wb') as wf:
+    with wave.open(_output_filename, 'wb') as wf:
         wf.setnchannels(CHANNELS)
         wf.setsampwidth(audio.get_sample_size(FORMAT))
         wf.setframerate(RATE)
         wf.writeframes(b''.join(frames))
 
-    print(f"Audio saved to {output_filename}")
+    print(f"Audio saved to {_output_filename}")
 
 if __name__ == "__main__":
     audio = pyaudio.PyAudio()
@@ -85,4 +88,4 @@ if __name__ == "__main__":
     output_filename = input('Skriv inn filnavn: ')
 
     # Example usage
-    record_system_audio('./songs/' + output_filename + '.wav', record_seconds, input_device_index)
+    record_audio('./songs/' + output_filename + '.wav', record_seconds, input_device_index)
